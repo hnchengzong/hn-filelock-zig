@@ -1,0 +1,27 @@
+.{
+    .name = .hn_filelock,
+
+    .version = "0.1.0",
+
+    .description = "A simple file locking library for Zig",
+
+    .authors = .{
+        .{
+            .name = "hnchengzong",
+        },
+    },
+
+    .fingerprint = 0x63d0aff15faccfd6,
+
+    .minimum_zig_version = "0.15.2",
+
+    .dependencies = .{},
+
+    .paths = .{
+        "build.zig",
+        "build.zig.zon",
+        "src",
+        "LICENSE",
+        "README.md",
+    },
+}
