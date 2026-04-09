@@ -33,3 +33,7 @@ zig-out/bin/hn_filelock_zig
 # 查看帮助
 ./zig-out/bin/hn_filelock_zig -h
 ```
+
+## AUR
+
+`paru -S hn-filelock-zig-bin`

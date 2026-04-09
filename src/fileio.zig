@@ -1,7 +1,10 @@
 const std = @import("std");
 
 pub fn read(allocator: std.mem.Allocator, path: []const u8) ![]u8 {
-    const file = try std.fs.cwd().openFile(path, .{});
+    const file = std.fs.cwd().openFile(path, .{}) catch |err| {
+        std.debug.print("error: cannot open file '{s}' -> {s}\n", .{ path, @errorName(err) });
+        return err;
+    };
     defer file.close();
 
     const size = try file.getEndPos();
