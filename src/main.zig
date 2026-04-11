@@ -10,8 +10,7 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    var filePaths = std.ArrayList([]const u8).empty;
-    defer filePaths.deinit(allocator);
+    var filePaths = std.ArrayList([]const u8).init(allocator);
 
     var outputPath: ?[]const u8 = null;
     var key: ?[]const u8 = null;
@@ -57,11 +56,14 @@ pub fn main() !void {
             try filePaths.append(allocator, current);
         }
     }
-    if (filePaths.items.len == 0 or key == null or (isEncrypt == isDecrypt)) {
+    const no_files = filePaths.items.len == 0;
+    const no_key = key == null;
+    const invalid_mode = isEncrypt == isDecrypt;
+
+    if (no_files or no_key or invalid_mode) {
         std.debug.print("usage: hn_filelock_zig files... -e/-d -k key [-o output]\n", .{});
         return;
     }
-
     const key_value = key.?;
     if (key_value.len == 0) {
         std.debug.print("error: key cannot be empty\n", .{});
@@ -91,12 +93,19 @@ pub fn main() !void {
             std.debug.print("error: unknown method: {s}\n", .{method});
             return;
         }
-        const targetPath = try fileio.getProcessedPath(allocator, path, outputPath, isEncrypt);
-        defer allocator.free(targetPath);
 
-        if (std.fs.cwd().access(targetPath, .{})) {
-            std.debug.print("warning: output file '{s}' already exists, it will be overwritten\n", .{targetPath});
-        } else |_| {}
+        var targetPath: []const u8 = undefined;
+        if (outputPath) |out| {
+            targetPath = out;
+        } else {
+            targetPath = path;
+        }
+
+        if (std.fs.cwd().access(targetPath, .{}) catch |err| {
+            if (err != error.FileNotFound) {
+                std.debug.print("warning: output file '{s}' already exists, it will be overwritten\n", .{targetPath});
+            }
+        }) {}
 
         try fileio.write(targetPath, data);
 
