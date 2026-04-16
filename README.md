@@ -1,10 +1,14 @@
 # hn-filelock-zig
 
+![Zig](https://img.shields.io/badge/Zig-F7A41D?logo=zig&logoColor=white)
+![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=archlinux&logoColor=white)
+
 一个使用 Zig 编写的简单的文件加密解密工具。
 
 ## 编译与使用
 
 ```bash
+
 zig build
 
 # 生成的二进制文件路径：
@@ -32,8 +36,13 @@ zig-out/bin/hn_filelock_zig
 
 # 查看帮助
 ./zig-out/bin/hn_filelock_zig -h
+
 ```
 
 ## AUR
 
 `paru -S hn-filelock-zig-bin`
+
+使用：
+
+`hn-filelock --args`
