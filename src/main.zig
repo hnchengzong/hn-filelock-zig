@@ -10,7 +10,8 @@ pub fn main() !void {
     const args = try std.process.argsAlloc(allocator);
     defer std.process.argsFree(allocator, args);
 
-    var filePaths = std.ArrayList([]const u8).init(allocator);
+    var filePaths = std.ArrayList([]const u8).empty;
+    defer filePaths.deinit(allocator);
 
     var outputPath: ?[]const u8 = null;
     var key: ?[]const u8 = null;
@@ -101,11 +102,12 @@ pub fn main() !void {
             targetPath = path;
         }
 
-        if (std.fs.cwd().access(targetPath, .{}) catch |err| {
+        _ = std.fs.cwd().access(targetPath, .{}) catch |err| {
             if (err != error.FileNotFound) {
                 std.debug.print("warning: output file '{s}' already exists, it will be overwritten\n", .{targetPath});
             }
-        }) {}
+            return err;
+        };
 
         try fileio.write(targetPath, data);
 
