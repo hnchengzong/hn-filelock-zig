@@ -2,6 +2,7 @@
 
 ![Zig](https://img.shields.io/badge/Zig-F7A41D?logo=zig&logoColor=white)
 ![Arch Linux](https://img.shields.io/badge/Arch_Linux-1793D1?logo=archlinux&logoColor=white)
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
 
 一个使用 Zig 编写的简单的文件加密解密工具。
 
