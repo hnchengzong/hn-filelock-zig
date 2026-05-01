@@ -42,7 +42,7 @@ fn print_help(args: [][:0]u8) void {
     std.debug.print("  -d decrypt\n", .{});
     std.debug.print("  -k key   set encryption key\n", .{});
     std.debug.print("  -o output\n", .{});
-    std.debug.print("  -m method(default:xor)  set cipher method(xor/add)\n", .{});
+    std.debug.print("  -m method(default:xor)  set cipher method(xor/add/sub)\n", .{});
     std.debug.print("  -h help   show this help\n", .{});
 
     std.process.exit(0);
@@ -98,6 +98,16 @@ fn run_cipher(
 
     if (std.mem.eql(u8, method, "add") and !is_encrypt) {
         cipher.add_decrypt(data, key);
+        return;
+    }
+
+    if (std.mem.eql(u8, method, "sub") and is_encrypt) {
+        cipher.sub_encrypt(data, key);
+        return;
+    }
+
+    if (std.mem.eql(u8, method, "sub") and !is_encrypt) {
+        cipher.sub_decrypt(data, key);
         return;
     }
 

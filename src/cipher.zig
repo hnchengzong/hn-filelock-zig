@@ -20,3 +20,19 @@ pub fn add_decrypt(data: []u8, key: []const u8) void {
         data[i] = data[i] -% key[i % kl];
     }
 }
+
+pub fn sub_encrypt(data: []u8, key: []const u8) void {
+    const kl = key.len;
+    for (0..data.len) |i| {
+        data[i] = data[i] -% key[i % kl];
+        data[i] = (data[i] << 1) | (data[i] >> 7);
+    }
+}
+
+pub fn sub_decrypt(data: []u8, key: []const u8) void {
+    const kl = key.len;
+    for (0..data.len) |i| {
+        data[i] = (data[i] >> 1) | (data[i] << 7);
+        data[i] = data[i] +% key[i % kl];
+    }
+}
